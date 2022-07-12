@@ -4,7 +4,8 @@ import { Sequelize, DataTypes } from "sequelize"
 // Cadena de conexion:
 // Postgres: postgres://<USER>:<PWD>@<HOST(IP o DOMINIO)>:5432/<DB_NAME>
 
-const CADENA_CONEXION = "postgres://veterinaria:veterinaria@localhost:5432/veterinariadb"
+//const CADENA_CONEXION = "postgres://veterinaria:veterinaria@localhost:5432/veterinariadb"
+const CADENA_CONEXION = process.env.DATABASE_URL
 const sequelize = new Sequelize(CADENA_CONEXION)
 
 // Definir nuestra entidades
