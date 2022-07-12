@@ -4,16 +4,27 @@ import { Sequelize, DataTypes } from "sequelize"
 // Cadena de conexion:
 // Postgres: postgres://<USER>:<PWD>@<HOST(IP o DOMINIO)>:5432/<DB_NAME>
 
+//Ahora se debe crear una variable de entorno en el localhost para que utilice la variable de la base de datos local
+//Para crear la variable de entorno se utiliza editar variables de entorno
 //const CADENA_CONEXION = "postgres://veterinaria:veterinaria@localhost:5432/veterinariadb"
+//Cuando se conecte a la nube va a conseguir la variable de entorno de la nube
 const CADENA_CONEXION = process.env.DATABASE_URL
-const sequelize = new Sequelize(CADENA_CONEXION, {
-    dialectOptions: {
-        ssl: {
-            require : true,
-            rejectUnauthorized : false
+let sequelize;
+//Cuando entra a producción en Heroku, la variable NODE_ENV tiene el valor production
+if (process.env.NODE_ENV == "production") { 
+    sequelize = new Sequelize(CADENA_CONEXION, {
+        dialectOptions: {
+            ssl: {
+                require : true,
+                rejectUnauthorized : false
+            }
         }
-    }
-})
+    })
+} else {
+    sequelize = new Sequelize(CADENA_CONEXION, {
+        dialect : "postgres"
+    })
+}
 
 // Definir nuestra entidades
 const Mascota = sequelize.define("Mascota", {
